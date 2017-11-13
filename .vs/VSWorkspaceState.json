@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BankingApp",
+    "\\BankingApp\\App_Data",
+    "\\BankingApp\\Controllers",
+    "\\BankingApp\\Models"
+  ],
+  "SelectedNode": "\\BankingApp\\Controllers\\AccountController.cs",
+  "PreviewInSolutionExplorer": false
+}
