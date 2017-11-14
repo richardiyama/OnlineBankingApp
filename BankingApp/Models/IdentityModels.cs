@@ -16,6 +16,8 @@ namespace BankingApp.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string Pin { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -31,5 +33,7 @@ namespace BankingApp.Models
         }
 
         public DbSet<CheckingAccount> CheckingAccount { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }

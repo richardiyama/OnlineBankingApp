@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BankingApp.Models;
+using BankingApp.Services;
 
 namespace BankingApp.Controllers
 {
@@ -155,10 +156,10 @@ namespace BankingApp.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var db = new ApplicationDbContext();
-                    var checkingAccount = new CheckingAccount { FirstName = model.FirstName, LastName = model.LastName, AccountNumber = "0000123456", Balance = 0, ApplicationUserId = user.Id };
-                    db.CheckingAccount.Add(checkingAccount);
-                    db.SaveChanges();
+                    UserManager.AddClaim(user.Id, new Claim(ClaimTypes.GivenName, model.FirstName));
+
+                    var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+                    service.CreateCheckingAccount(model.FirstName, model.LastName, user.Id, 0);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -356,9 +357,9 @@ namespace BankingApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel User, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            if (base.User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Manage");
             }
@@ -371,13 +372,18 @@ namespace BankingApp.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = User.Email, Email = User.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+
+                        var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+                        service.CreateCheckingAccount("Facebook", "User", user.Id, 0);
+
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
@@ -386,7 +392,7 @@ namespace BankingApp.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
-            return View(model);
+            return View(User);
         }
 
         //

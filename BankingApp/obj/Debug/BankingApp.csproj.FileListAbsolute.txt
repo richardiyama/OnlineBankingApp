@@ -94,3 +94,6 @@ c:\users\richard iyama\documents\visual studio 2017\Projects\BankingApp\BankingA
 c:\users\richard iyama\documents\visual studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.csprojResolveAssemblyReference.cache
 c:\users\richard iyama\documents\visual studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.dll
 c:\users\richard iyama\documents\visual studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.pdb
+C:\Users\Richard Iyama\Documents\Visual Studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.Migrations.InitialCreate.resources
+C:\Users\Richard Iyama\Documents\Visual Studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.csproj.GenerateResource.Cache
+C:\Users\Richard Iyama\Documents\Visual Studio 2017\Projects\BankingApp\BankingApp\obj\Debug\BankingApp.Migrations.AcccountNumberChanges.resources
